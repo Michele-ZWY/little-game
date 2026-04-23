@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>恋爱互动剧情游戏</title>
+<style>
+body{
+    font-family: Arial;
+    background:#0f0f1a;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+#game{
+    width:600px;
+    background:#1c1c2e;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 0 20px rgba(255,255,255,0.1);
+}
+button{
+    width:100%;
+    margin-top:10px;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#3a3a5a;
+    color:white;
+}
+button:hover{background:#5a5a8a;}
+#text{
+    min-height:120px;
+    line-height:1.6;
+}
+</style>
+</head>
+<body>
+
+<div id="game">
+    <div id="text"></div>
+    <div id="buttons"></div>
+</div>
+
+<script>
+let state = 0;
+let affection = 0;
+
+// 60+ 节点剧情库
+const scenes = [
+{t:"你在城市雨夜的咖啡店遇见了她，她抬头看了你一眼。", o:[["走过去打招呼",1],["假装没看见",2]]},
+
+{t:"她微微笑了一下：'你经常来这里？'", o:[["回答是",3],["说第一次来",4]]},
+
+{t:"她似乎对你有点兴趣，但没有继续说话。", o:[["主动要联系方式",5],["沉默喝咖啡",6]]},
+
+{t:"她轻轻点头，好像接受了你的存在。", o:[["聊工作",7],["聊兴趣",8]]},
+
+{t:"她笑了：'那还挺巧的。'", o:[["继续聊天",9],["换个话题",10]]},
+
+{t:"你们交换了联系方式。", o:[["发消息",11],["等她先发",12]]},
+
+{t:"她没有再看你。空气有点安静。", o:[["离开",13],["再待一会",14]]},
+
+{t:"她说她喜欢旅行。", o:[["问最喜欢的地方",15],["说你也喜欢旅行",16]]},
+
+{t:"她看起来放松了一些。", o:[["邀请下次见面",17],["继续聊天",18]]},
+
+{t:"她说可以再见。", o:[["开心回应",19],["保持冷静",20]]},
+
+{t:"她回复了你的消息。", o:[["秒回她",21],["隔一会回",22]]},
+
+{t:"你等了一整天。", o:[["继续等",23],["主动再发",24]]},
+
+{t:"夜晚很安静，你有点失落。", o:[["回家",25],["去散步",26]]},
+
+{t:"你发现她也在同一条街。", o:[["打招呼",27],["远远看着",28]]},
+
+{t:"她似乎注意到你了。", o:[["走近",29],["犹豫",30]]},
+
+{t:"她问你为什么在这里。", o:[["说巧合",31],["说特意来找她",32]]},
+
+{t:"她笑了一下。", o:[["继续约会",33],["换地方聊天",34]]},
+
+{t:"你们一起走在夜色里。", o:[["牵手",35],["保持距离",36]]},
+
+{t:"她没有拒绝你。", o:[["表白",37],["继续暧昧",38]]},
+
+{t:"空气变得微妙。", o:[["更主动",39],["后退一步",40]]},
+
+{t:"她沉默了一会。", o:[["等待",41],["打破沉默",42]]},
+
+{t:"她说她有点在意你。", o:[["拥抱她",43],["微笑回应",44]]},
+
+{t:"好感度开始明显变化。", o:[["确认关系",45],["再等等",46]]},
+
+{t:"她看着你，没有说话。", o:[["亲近一步",47],["停住",48]]},
+
+{t:"夜风很轻。", o:[["继续走",49],["送她回家",50]]},
+
+{t:"她在门口停下。", o:[["告别",51],["留下多聊一会",52]]},
+
+{t:"她问你会不会想她。", o:[["会",53],["不回答",54]]},
+
+{t:"关系开始稳定。", o:[["进入关系",55],["保持暧昧",56]]},
+
+{t:"她第一次主动联系你。", o:[["立刻回应",57],["慢一点回应",58]]},
+
+{t:"她约你见面。", o:[["接受",59],["犹豫",60]]},
+
+// ENDINGS
+{t:"结局A：你们只是擦肩而过的陌生人。", o:[]},
+{t:"结局B：你们成为了稳定关系，但仍有距离。", o:[]},
+{t:"结局C：隐藏结局——她其实一直在等你主动走近。", o:[]}
+];
+
+function render(){
+    let scene = scenes[state];
+    document.getElementById("text").innerText = scene.t;
+
+    let btn = document.getElementById("buttons");
+    btn.innerHTML = "";
+
+    if(scene.o.length === 0){
+        let endBtn = document.createElement("button");
+        endBtn.innerText = "重新开始";
+        endBtn.onclick = () => {state=0; affection=0; render();}
+        btn.appendChild(endBtn);
+        return;
+    }
+
+    scene.o.forEach(opt=>{
+        let b = document.createElement("button");
+        b.innerText = opt[0];
+        b.onclick = ()=>{
+            state = opt[1];
+            affection++;
+            render();
+        }
+        btn.appendChild(b);
+    });
+}
+
+render();
+</script>
+
+</body>
+</html>
